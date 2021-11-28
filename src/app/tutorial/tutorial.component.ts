@@ -17,7 +17,7 @@ export class TutorialComponent implements OnInit {
 
   ngOnInit() {}
 
-  public navigateToMenu() {
+  public navigateToLogin() {
     this.router.navigate(['/menu']);
   }
 

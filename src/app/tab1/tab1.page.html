@@ -1,17 +1,42 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
+      <ion-title size="small">Paternity Tester</ion-title>
+    </ion-toolbar>
+    <ion-toolbar>
+      <ion-title>Your kids</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Adrian
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>Gender</ion-label>
+          <ion-note slot="end">Male</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Date of birth</ion-label>
+          <ion-note slot="end">01.01.2021</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Current match</ion-label>
+          <ion-note slot="end"><span color="danger">81%</span></ion-note>
+        </ion-item>
+      </ion-list>
+      <ion-button expand="block" href="/details">Details</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
