@@ -1,0 +1,56 @@
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="small">Paternity Tester</ion-title>
+    </ion-toolbar>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/menu" color="danger"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Adrian</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Matched in 81%</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+     What type of test you wanna do?
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-item href="/details/eye-color-test">
+      <ion-icon name="eye-outline" slot="start"></ion-icon>
+      <ion-label>Eye color test (81%)</ion-label>
+    </ion-item>
+
+    <ion-item href="#">
+      <ion-icon name="recording-outline" slot="start"></ion-icon>
+      <ion-label>Hair color test</ion-label>
+    </ion-item>
+
+    <ion-item href="#">
+      <ion-icon name="water-outline" slot="start"></ion-icon>
+      <ion-label>Blood test</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="male-female-outline" slot="start"></ion-icon>
+      <ion-label>Chinese gender test</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="invert-mode-outline" slot="start"></ion-icon>
+      <ion-label>Peculiarities test</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="scan-outline" slot="start"></ion-icon>
+      <ion-label>Face shape test</ion-label>
+    </ion-item>
+  </ion-card>
+
+</ion-content>
