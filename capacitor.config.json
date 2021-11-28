@@ -1,6 +1,6 @@
 {
-	"appId": "io.ionic.starter",
-	"appName": "photo-gallery",
+	"appId": "pl.ithero.paternitytest",
+	"appName": "Paternity Tester",
 	"webDir": "www",
 	"bundledWebRuntime": false
 }
