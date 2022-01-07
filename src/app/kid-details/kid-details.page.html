@@ -1,5 +1,5 @@
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <ion-header>
     <ion-toolbar>
       <ion-title size="small">Paternity Tester</ion-title>
     </ion-toolbar>
@@ -13,7 +13,7 @@
 
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Matched in 81%</ion-card-title>
+      <ion-card-title><span [style.color]="matching == 0 ? 'red': 'black'">{{matching}}%</span> of chance that you are a father</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
@@ -24,12 +24,12 @@
   <ion-card>
     <ion-item href="/details/eye-color-test">
       <ion-icon name="eye-outline" slot="start"></ion-icon>
-      <ion-label>Eye color test (81%)</ion-label>
+      <ion-label>Eye color test (<span [style.color]="eyeColorTestPercentage == 0 ? 'red': 'black'">{{eyeColorTestPercentage}}%</span>)</ion-label>
     </ion-item>
 
-    <ion-item href="#">
+    <ion-item href="/details/hair-color-test">
       <ion-icon name="recording-outline" slot="start"></ion-icon>
-      <ion-label>Hair color test</ion-label>
+      <ion-label>Hair color test (<span [style.color]="hairColorTestPercentage == 0 ? 'red': 'black'">{{hairColorTestPercentage}}%</span>)</ion-label>
     </ion-item>
 
     <ion-item href="#">

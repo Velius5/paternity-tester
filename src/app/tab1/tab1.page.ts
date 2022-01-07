@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {StorageKey, StorageService} from "../services/storage.service";
 
 @Component({
   selector: 'app-tab1',
@@ -6,7 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
+  // eyeColorTestPercentage: number;
 
-  constructor() {}
+  constructor(private storageService: StorageService) {
+    // storageService.get(StorageKey.EYE_COLOR_TEST_PERCENTAGE).then(value => this.eyeColorTestPercentage = value);
+  }
 
 }

@@ -29,6 +29,10 @@ const routes: Routes = [
     path: '**',
     redirectTo: '/tutorial',
     pathMatch: 'full'
+  },
+  {
+    path: 'hair-color-test',
+    loadChildren: () => import('./kid-details/hair-color-test/hair-color-test.module').then(m => m.HairColorTestPageModule)
   }
 ];
 @NgModule({
