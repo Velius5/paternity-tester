@@ -6,7 +6,6 @@ import { Tab1Page } from './tab1.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 
 import { Tab1PageRoutingModule } from './tab1-routing.module';
-import {KidDetailsPage} from "../kid-details/kid-details.page";
 
 @NgModule({
   imports: [
@@ -17,8 +16,7 @@ import {KidDetailsPage} from "../kid-details/kid-details.page";
     Tab1PageRoutingModule
   ],
   declarations: [
-    Tab1Page,
-    KidDetailsPage
+    Tab1Page
   ]
 })
 export class Tab1PageModule {}

@@ -1,0 +1,150 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title size="small">Paternity Tester</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/details" color="danger"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Eye color test</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen *ngIf="step == 0">
+  <ion-card>
+    <img src="./assets/eye-color-test.jpg" />
+    <ion-card-header>
+      <ion-card-subtitle>1 credit</ion-card-subtitle>
+      <ion-card-title>Eye color test</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Depending on your parent’s eye color, how dominant that eye color is, and the variation of how other genes interact plays a huge role in what eye color you are born with. In some cases this test can give you a 100% confidence that you are not a father.
+      <ion-button expand="block" (click)="startTest()">Start test</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-content *ngIf="step == 1">
+
+  <form [formGroup]="form" (ngSubmit)="checkEyeColor()">
+
+    <h3>Required</h3>
+    <ion-list>
+      <ion-item>
+        <ion-label>Father</ion-label>
+        <ion-select value="" formControlName="father">
+          <ion-select-option value="0">Brown</ion-select-option>
+          <ion-select-option value="1">Blue</ion-select-option>
+          <ion-select-option value="2">Green</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Mother</ion-label>
+        <ion-select value="" formControlName="mother">
+          <ion-select-option value="0">Brown</ion-select-option>
+          <ion-select-option value="1">Blue</ion-select-option>
+          <ion-select-option value="2">Green</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Kid</ion-label>
+        <ion-select value="" formControlName="kid">
+          <ion-select-option value="0">Brown</ion-select-option>
+          <ion-select-option value="1">Blue</ion-select-option>
+          <ion-select-option value="2">Green</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+    </ion-list>
+
+    <h3>Additional (better results)</h3>
+    <ion-list>
+
+      <ion-item>
+        <ion-label>Father's father</ion-label>
+        <ion-select value="-1" formControlName="fatherFather">
+          <ion-select-option value="-1">Unknown</ion-select-option>
+          <ion-select-option value="0">Brown</ion-select-option>
+          <ion-select-option value="1">Blue</ion-select-option>
+          <ion-select-option value="2">Green</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Father's mother</ion-label>
+        <ion-select value="-1" formControlName="fatherMother">
+          <ion-select-option value="-1">Unknown</ion-select-option>
+          <ion-select-option value="0">Brown</ion-select-option>
+          <ion-select-option value="1">Blue</ion-select-option>
+          <ion-select-option value="2">Green</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Mother's father</ion-label>
+        <ion-select value="-1" formControlName="motherFather">
+          <ion-select-option value="-1">Unknown</ion-select-option>
+          <ion-select-option value="0">Brown</ion-select-option>
+          <ion-select-option value="1">Blue</ion-select-option>
+          <ion-select-option value="2">Green</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Mother's mother</ion-label>
+        <ion-select value="-1" formControlName="motherMother">
+          <ion-select-option value="-1">Unknown</ion-select-option>
+          <ion-select-option value="0">Brown</ion-select-option>
+          <ion-select-option value="1">Blue</ion-select-option>
+          <ion-select-option value="2">Green</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+
+    </ion-list>
+
+    <ion-button type="submit" [disabled]="form.invalid" expand="block">Check it</ion-button>
+
+  </form>
+
+</ion-content>
+
+<ion-content [fullscreen]="true" *ngIf="step == 2">
+
+  <ion-text style="text-align: center;">
+    <div class="content">
+      <h4>There was a </h4>
+      <h1 *ngIf="form.get('kid').value == '0'">{{results.brownPossibility}}%</h1>
+      <h1 *ngIf="form.get('kid').value == '1'">{{results.bluePossibility}}%</h1>
+      <h1 *ngIf="form.get('kid').value == '2'">{{results.greenPossibility}}%</h1>
+      <h4>of chance that your kid will have a
+        <span *ngIf="form.get('kid').value == '0'">Brown</span>
+        <span *ngIf="form.get('kid').value == '1'">Blue</span>
+        <span *ngIf="form.get('kid').value == '2'">Green</span>
+        eyes.</h4>
+      <br /> <br />
+      <h5 *ngIf="form.get('kid').value == 1 && results.bluePossibility == 0
+     || form.get('kid').value == 2 && results.greenPossibility == 0
+     || form.get('kid').value == 0 && results.brownPossibility == 0">You definitely need to check if you are a father.</h5>
+      <h5 *ngIf="form.get('kid').value == 1 && results.bluePossibility > 0
+     || form.get('kid').value == 2 && results.greenPossibility > 0
+     || form.get('kid').value == 0 && results.brownPossibility > 0">It means that it is possible that you are a father.</h5>
+      <h5>Do another tests to be sure.</h5>
+      <br /><br />
+    </div>
+  </ion-text>
+
+  <h3>Possibilities</h3>
+  <div class="content">
+    <p>Blue: {{results.bluePossibility}}% of chance</p>
+    <p>Green: {{results.greenPossibility}}% of chance</p>
+    <p>Brown: {{results.brownPossibility}}% of chance</p>
+  </div>
+
+
+
+
+
+</ion-content>

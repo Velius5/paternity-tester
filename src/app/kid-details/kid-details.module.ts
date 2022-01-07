@@ -12,7 +12,7 @@ import {KidDetailsPageRoutingModule} from './kid-details-routing.module';
     IonicModule,
     CommonModule,
     FormsModule,
-    KidDetailsPageRoutingModule
+    KidDetailsPageRoutingModule,
   ],
   declarations: [KidDetailsPage]
 })
