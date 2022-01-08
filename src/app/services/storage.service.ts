@@ -77,4 +77,5 @@ export class StorageService {
 export enum StorageKey {
   EyeColorTest = "EYE_COLOR_TEST_PERCENTAGE",
   HairColorTest = "HAIR_COLOR_TEST_PERCENTAGE",
+  User = "USER",
 }

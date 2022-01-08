@@ -9,6 +9,16 @@ import { AppComponent } from './app.component';
 import { BabytesterService } from './services/babytester.service';
 import {IonicStorageModule} from '@ionic/storage-angular';
 import {StorageService} from './services/storage.service';
+import {environment} from '../environments/environment';
+import {AngularFirestoreModule} from '@angular/fire/compat/firestore';
+import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
+import {AngularFireModule} from '@angular/fire/compat';
+import {AngularFireDatabaseModule} from '@angular/fire/compat/database';
+import {AngularFireAuthModule, USE_DEVICE_LANGUAGE} from '@angular/fire/compat/auth';
+import {AngularFireAuthGuardModule} from '@angular/fire/compat/auth-guard';
+import {AngularFireRemoteConfigModule} from '@angular/fire/compat/remote-config';
+import {AngularFireMessagingModule} from '@angular/fire/compat/messaging';
+import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService} from '@angular/fire/compat/analytics';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,12 +27,25 @@ import {StorageService} from './services/storage.service';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
+    AngularFireAuthGuardModule,
+    AngularFireRemoteConfigModule,
+    AngularFireMessagingModule,
+    AngularFireAnalyticsModule,
+    // provide modular style for AppCheck, see app.browser/server
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     BabytesterService,
-    StorageService
+    StorageService,
+    AngularFirestoreModule,
+    UserTrackingService,
+    ScreenTrackingService,
+    { provide: USE_DEVICE_LANGUAGE, useValue: true },
     ],
   bootstrap: [AppComponent],
 })
