@@ -1,0 +1,64 @@
+.small-text {
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.divider {
+    display: flex;
+    
+    &:before,
+    &:after {
+      content: "";
+      flex: 1;
+    }
+}
+  
+.line {
+    align-items: center;
+    margin: 1em -1em;
+    color: #cccccc;
+    
+    &:before,
+    &:after {
+      height: 1px;
+      margin: 0 1em;
+    }
+} 
+
+.one-line {
+    &:before,
+    &:after {
+       background: #cccccc;
+    }
+}
+
+h3 {
+  margin: 20px;
+  font-weight: bold;
+}
+
+.content {
+  padding: 0 20px;
+}
+
+.ml-1 {
+  margin-left: 1em;
+}
+
+.logo {
+  width: 50%;
+  height: 50%;
+  margin: 2em auto 0.5em auto;
+}
+
+.appname {
+  margin: 0 auto;
+  font-size: 2em;
+}
+
+.mt-1 {
+  margin-top: 1em;
+}

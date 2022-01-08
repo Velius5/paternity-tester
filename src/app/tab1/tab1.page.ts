@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {StorageKey, StorageService} from "../services/storage.service";
+import {StorageKey, StorageService} from '../services/storage.service';
 
 @Component({
   selector: 'app-tab1',
