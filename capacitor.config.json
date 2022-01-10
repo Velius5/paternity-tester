@@ -1,5 +1,5 @@
 {
-	"appId": "pl.ithero.paternitytest",
+	"appId": "pl.ithero.paternitytester",
 	"appName": "Paternity Tester",
 	"webDir": "www",
 	"bundledWebRuntime": false
