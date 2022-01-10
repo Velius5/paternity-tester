@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 
 import {KidDetailsPage} from './kid-details.page';
 import {KidDetailsPageRoutingModule} from './kid-details-routing.module';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   imports: [
@@ -13,7 +14,10 @@ import {KidDetailsPageRoutingModule} from './kid-details-routing.module';
     CommonModule,
     FormsModule,
     KidDetailsPageRoutingModule,
+    RouterModule
   ],
-  declarations: [KidDetailsPage]
+  declarations: [
+    KidDetailsPage,
+  ]
 })
 export class KidDetailsPageModule {}

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {StorageKey, StorageService} from '../services/storage.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-kid-details',
@@ -11,7 +12,8 @@ export class KidDetailsPage implements OnInit{
   eyeColorTestPercentage: number;
   hairColorTestPercentage: number;
 
-  constructor(public storageService: StorageService) {
+  constructor(public storageService: StorageService,
+              public router: Router) {
   }
 
   ngOnInit() {
