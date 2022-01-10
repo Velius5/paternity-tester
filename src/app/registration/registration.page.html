@@ -1,28 +1,33 @@
 <ion-header>
+  <ion-toolbar class="centered-toolbar">
+    <ion-title class="centered-title" size="small">Paternity Tester</ion-title>
+  </ion-toolbar>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button color="danger"></ion-back-button>
     </ion-buttons>
-    <ion-title>Register User</ion-title>
+    <ion-title>Create account</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form>    
-    <ion-item lines="full">
-      <ion-label position="floating">Email</ion-label>
-      <ion-input type="text" #email required></ion-input>
-    </ion-item> 
+  <div class="content">
+    <form>
+      <ion-item lines="full">
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="text" #email required></ion-input>
+      </ion-item>
 
-    <ion-item lines="full">
-      <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" #password required></ion-input>
-    </ion-item>
+      <ion-item lines="full">
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" #password required></ion-input>
+      </ion-item>
 
-    <ion-row>
-      <ion-col> 
-      <ion-button type="submit" (click)="signUp(email, password)" expand="block">Register</ion-button>
-      </ion-col>
-    </ion-row>
-  </form>
+      <ion-row>
+        <ion-col>
+          <ion-button type="submit" (click)="signUp(email, password)" expand="block">Register</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
 </ion-content>

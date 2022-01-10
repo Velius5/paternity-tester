@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import * as _ from 'lodash';
 import {BabytesterService} from '../../services/babytester.service';
 import {StorageKey, StorageService} from '../../services/storage.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-eye-color-test',
@@ -17,7 +18,8 @@ export class EyeColorTestPage implements OnInit {
   testModel;
 
   constructor(public babytesterService: BabytesterService,
-              public storageService: StorageService) {
+              public storageService: StorageService,
+              public router: Router) {
     this.babytesterService = babytesterService;
     this.form = new FormGroup({
       father: new FormControl('1', Validators.required),

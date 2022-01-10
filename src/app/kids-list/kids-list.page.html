@@ -1,12 +1,14 @@
-<ion-content [fullscreen]="true">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title size="small">Paternity Tester</ion-title>
-    </ion-toolbar>
-    <ion-toolbar>
-      <ion-title>Your kids</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-header>
+  <ion-toolbar class="centered-toolbar">
+    <ion-title class="centered-title" size="small">Paternity Tester</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="danger"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Your kids</ion-title>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content [fullscreen]="true">
 
@@ -32,7 +34,7 @@
           <ion-note slot="end"><span color="danger">81%</span></ion-note>
         </ion-item>
       </ion-list>
-      <ion-button expand="block" href="/details">Details</ion-button>
+      <ion-button expand="block" [routerLink]="['/details']">Details</ion-button>
     </ion-card-content>
   </ion-card>
 
@@ -58,13 +60,13 @@
           <ion-note slot="end"><span color="danger">81%</span></ion-note>
         </ion-item>
       </ion-list>
-      <ion-button expand="block" href="/details">Details</ion-button>
+      <ion-button expand="block" [routerLink]="['/details']">Details</ion-button>
     </ion-card-content>
   </ion-card>
-
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="add-circle-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button>
+    <ion-icon name="add-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

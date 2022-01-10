@@ -1,12 +1,3 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title size="small">Paternity Tester</ion-title>
-  </ion-toolbar>
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
   <div class="content">
     <ion-col>
@@ -29,6 +20,30 @@
       <ion-row>
         <ion-col>
         <ion-button type="submit" (click)="logIn(email, password)" class="mt-1" expand="block">Login</ion-button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-button
+            type="submit"
+            class="mt-1"
+            [routerLink]="['/registration']"
+            expand="block">
+            <span class="ml-1">Create account</span>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-button
+            type="submit"
+            class="mt-1"
+            [routerLink]="['/forgot-password']"
+            expand="block">
+            <span class="ml-1">Forgot password</span>
+          </ion-button>
         </ion-col>
       </ion-row>
 

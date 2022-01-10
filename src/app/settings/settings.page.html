@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar class="centered-toolbar">
+    <ion-title class="centered-title" size="small">Paternity Tester</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="danger"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="content">
+    Thank you for using our app. If you have any questions, please contact us on <b>opinions@ithero.pl</b>
+    <br />
+    <br />
+<!--    <ion-button expand="block">Buy credits</ion-button>-->
+<!--    <ion-button expand="block">Change password</ion-button>-->
+    <ion-button type="submit" (click)="authService.SignOut()" expand="block">Logout</ion-button>
+  </div>
+</ion-content>

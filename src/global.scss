@@ -24,3 +24,36 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+ion-toolbar {
+  ion-buttons {
+    position: fixed;
+  }
+}
+
+ion-title {
+  font-size: 15px;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+}
+
+.centered-toolbar {
+  height: 30px;
+
+  .centered-title {
+    text-align: center;
+    padding-bottom: 5px;
+    font-size: 12px;
+    font-weight: normal;
+  }
+}
+
+h3 {
+  margin: 20px;
+  font-weight: bold;
+}
+
+.content {
+  padding: 20px;
+}
