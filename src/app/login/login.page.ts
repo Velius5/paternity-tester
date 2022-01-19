@@ -1,7 +1,8 @@
 import { Component,OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {AuthenticationService} from '../services/authentication.service';
-import {StorageKey, StorageService} from "../services/storage.service";
+import {StorageKey, StorageService} from '../services/storage.service';
+import {KidsService} from '../services/kids.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,8 @@ export class LoginPage implements OnInit {
   constructor(
     public authService: AuthenticationService,
     public router: Router,
-    public storageService: StorageService
+    public storageService: StorageService,
+    private kidsService: KidsService
   ) {}
 
   ngOnInit() {
@@ -25,15 +27,10 @@ export class LoginPage implements OnInit {
     });
   }
 
-  logIn(email, password) {
-    this.authService.SignIn(email.value, password.value)
+  login(email, password) {
+    this.authService.login(email.value, password.value)
       .then((res) => {
-        if(this.authService.isEmailVerified) {
-          this.router.navigate(['tutorial']);
-        } else {
-          window.alert('Email is not verified');
-          return false;
-        }
+        this.router.navigate(['tutorial']);
       }).catch((error) => {
         window.alert(error.message);
       });

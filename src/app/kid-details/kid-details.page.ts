@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {StorageKey, StorageService} from '../services/storage.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {KidsService} from '../services/kids.service';
+import {Kid} from '../model/kid';
 
 @Component({
   selector: 'app-kid-details',
@@ -8,25 +10,20 @@ import {Router} from '@angular/router';
   styleUrls: ['kid-details.page.scss']
 })
 export class KidDetailsPage implements OnInit{
-  matching: number;
-  eyeColorTestPercentage: number;
-  hairColorTestPercentage: number;
+  kid: Kid;
 
-  constructor(public storageService: StorageService,
-              public router: Router) {
+  constructor(public kidsService: KidsService,
+              public router: Router,
+              public route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    Promise.all([
-      this.storageService.get(StorageKey.EyeColorTest),
-      this.storageService.get(StorageKey.HairColorTest)
-    ]).then((values) => {
-      this.eyeColorTestPercentage = values[0];
-      this.hairColorTestPercentage = values[1];
-      this.matching = Math.round((this.eyeColorTestPercentage + this.hairColorTestPercentage) / 2);
-      if(this.eyeColorTestPercentage === 0 || this.hairColorTestPercentage === 0) {
-        this.matching = 0;
-      }
+    this.route.paramMap.subscribe( paramMap => {
+      const kidId = paramMap.get('id');
+      this.kidsService.getKidById(kidId).then(k => {
+        console.log(k);
+        this.kid = k;
+      });
     });
   }
 

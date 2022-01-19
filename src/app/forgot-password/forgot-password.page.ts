@@ -24,7 +24,7 @@ export class ForgotPasswordPage implements OnInit {
 
   send() {
     if(!this.form.invalid) {
-      this.authService.PasswordRecover(this.form.get('email').value)
+      this.authService.recoverPassword(this.form.get('email').value)
         .then((res) => {
           this.resetPasswordLinkSent = true;
         }).catch((error) => {

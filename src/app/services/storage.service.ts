@@ -6,7 +6,6 @@ import {Storage} from '@ionic/storage-angular';
 })
 export class StorageService {
   constructor(public storage: Storage) {
-    console.log('Your storage provider is working here !');
     storage.create();
   }
 
@@ -14,7 +13,7 @@ export class StorageService {
   async set(key: string, value: any): Promise<any> {
     try {
       const result = await this.storage.set(key, value);
-      console.log('set string in storage: ' + result);
+      console.log('storageSET: ' + result);
       return true;
     } catch (reason) {
       console.log(reason);
@@ -41,7 +40,7 @@ export class StorageService {
   async setObject(key: string, object: Object) {
     try {
       const result = await this.storage.set(key, JSON.stringify(object));
-      console.log('set Object in storage: ' + result);
+      console.log('storageSET: ' + result);
       return true;
     } catch (reason) {
       console.log(reason);
@@ -78,4 +77,5 @@ export enum StorageKey {
   EyeColorTest = "EYE_COLOR_TEST_PERCENTAGE",
   HairColorTest = "HAIR_COLOR_TEST_PERCENTAGE",
   User = "USER",
+  Kids = "KIDS",
 }

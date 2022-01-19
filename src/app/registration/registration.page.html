@@ -12,20 +12,29 @@
 
 <ion-content>
   <div class="content">
-    <form>
-      <ion-item lines="full">
-        <ion-label position="floating">Email</ion-label>
-        <ion-input type="text" #email required></ion-input>
-      </ion-item>
-
-      <ion-item lines="full">
-        <ion-label position="floating">Password</ion-label>
-        <ion-input type="password" #password required></ion-input>
-      </ion-item>
+    <form [formGroup]="form" (ngSubmit)="send()">
 
       <ion-row>
         <ion-col>
-          <ion-button type="submit" (click)="signUp(email, password)" expand="block">Register</ion-button>
+          <ion-item lines="full" class="input-big">
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item lines="full" class="input-big">
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-button type="submit" [disabled]="!form.valid" expand="block">Register</ion-button>
         </ion-col>
       </ion-row>
     </form>
