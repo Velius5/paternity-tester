@@ -19,6 +19,8 @@ import {AngularFireAuthGuardModule} from '@angular/fire/compat/auth-guard';
 import {AngularFireRemoteConfigModule} from '@angular/fire/compat/remote-config';
 import {AngularFireMessagingModule} from '@angular/fire/compat/messaging';
 import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService} from '@angular/fire/compat/analytics';
+import {KidsService} from './services/kids.service';
+import {AuthenticationService} from "./services/authentication.service";
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,6 +37,7 @@ import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService} 
     AngularFireRemoteConfigModule,
     AngularFireMessagingModule,
     AngularFireAnalyticsModule,
+    AngularFirestoreModule,
     // provide modular style for AppCheck, see app.browser/server
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
   ],
@@ -42,11 +45,12 @@ import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService} 
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     BabytesterService,
     StorageService,
-    AngularFirestoreModule,
     UserTrackingService,
     ScreenTrackingService,
+    AuthenticationService,
+    KidsService,
     { provide: USE_DEVICE_LANGUAGE, useValue: true },
-    ],
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
