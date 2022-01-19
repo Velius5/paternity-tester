@@ -16,6 +16,9 @@
     <ion-card-header>
       <ion-card-title>
         {{kid.name}}
+        <span class="edit-button">
+          <ion-icon (click)="openModal(kid)" name="create-outline"></ion-icon>
+        </span>
       </ion-card-title>
     </ion-card-header>
 

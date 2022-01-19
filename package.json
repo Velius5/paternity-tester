@@ -34,6 +34,7 @@
     "@ionic/storage-angular": "^3.0.6",
     "firebase": "^9.6.2",
     "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "rxfire": "^6.0.3",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",

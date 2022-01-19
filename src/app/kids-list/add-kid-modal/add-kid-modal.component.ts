@@ -3,6 +3,7 @@ import {Kid} from '../../model/kid';
 import {ModalController, ToastController} from '@ionic/angular';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {KidsService} from '../../services/kids.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-add-kid-modal',
@@ -18,21 +19,29 @@ export class AddKidModalComponent implements OnInit {
               private toastController: ToastController,
               private kidsService: KidsService) {
     this.form = new FormGroup({
-      name: new FormControl('', Validators.required),
+      name: new FormControl(this.kid ? this.kid.name : '', Validators.required),
       gender: new FormControl('', Validators.required),
       dateOfBirth: new FormControl('', Validators.required)
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if(this.kid) {
+      this.form.get('name').setValue(this.kid.name);
+      this.form.get('gender').setValue(this.kid.gender);
+      const dateOfBirth = moment(this.kid.dateOfBirth, 'DD-MM-YYYY');
+      this.form.get('dateOfBirth').setValue(dateOfBirth.format());
+    }
+  }
 
   async save() {
     if(!this.form.invalid) {
+      const dateOfBirth  = moment(this.form.get('dateOfBirth').value);
       if(this.kid == null) {
         const newKid = {
           name: this.form.get('name').value,
           gender: this.form.get('gender').value,
-          dateOfBirth: this.form.get('dateOfBirth').value,
+          dateOfBirth: dateOfBirth.format('DD-MM-YYYY'),
           userId: null,
           tests: {
             eyeColorTest: null,
@@ -50,7 +59,7 @@ export class AddKidModalComponent implements OnInit {
       } else {
         this.kid.name = this.form.get('name').value;
         this.kid.gender = this.form.get('gender').value;
-        this.kid.dateOfBirth = this.form.get('dateOfBirth').value;
+        this.kid.dateOfBirth = dateOfBirth.format('DD-MM-YYYY');
         this.kidsService.updateKid(this.kid).then(() => {
           this.successToast();
           this.modalController.dismiss(this.kid);
@@ -67,7 +76,7 @@ export class AddKidModalComponent implements OnInit {
 
   async successToast() {
     const toast = await this.toastController.create({
-      header: 'Kid added successfully',
+      header: this.kid ? 'Kid updated successfully' : 'Kid added successfully',
       message: 'Now you can start testing your paternity',
       duration: 3000,
       position: 'middle'
@@ -77,7 +86,7 @@ export class AddKidModalComponent implements OnInit {
 
   async errorToast() {
     const toast = await this.toastController.create({
-      header: 'Kid cannot be added',
+      header: this.kid ? 'Kid cannot be updated' : 'Kid cannot be added',
       message: 'Please, try again later',
       duration: 3000,
       position: 'middle'
