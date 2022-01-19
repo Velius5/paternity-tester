@@ -1,0 +1,52 @@
+<ion-content class="ion-padding" overflow-scroll="true">
+  <h3>Add kid</h3>
+  <form [formGroup]="form" (ngSubmit)="save()">
+
+    <ion-row>
+      <ion-col>
+        <ion-item lines="full" class="input-big">
+          <ion-label position="floating">Name</ion-label>
+          <ion-input type="text" formControlName="name"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item lines="full" class="input-big">
+          <ion-label position="floating">Gender</ion-label>
+          <ion-select formControlName="gender">
+            <ion-select-option value="MALE">Male</ion-select-option>
+            <ion-select-option value="FEMALE">Female</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item lines="full" class="input-big">
+          <ion-label position="floating">Date of birth</ion-label>
+          <ion-input
+            value="{{ form.get('dateOfBirth').value | date: 'dd.MM.yyyy' }}"
+            id="date"
+          ></ion-input>
+          <ion-popover trigger="date" size="cover">
+            <ng-template>
+              <ion-datetime presentation="date" formControlName="dateOfBirth" showDefaultButtons="true"></ion-datetime>
+            </ng-template>
+          </ion-popover>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <ion-button type="submit" [disabled]="form.invalid" color="primary" class="mr-2">Save</ion-button>
+        <ion-button (click)="closeModal()" color="light">Cancel</ion-button>
+      </ion-col>
+    </ion-row>
+
+  </form>
+
+</ion-content>

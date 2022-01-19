@@ -6,16 +6,16 @@
     <ion-buttons slot="start">
       <ion-back-button color="danger"></ion-back-button>
     </ion-buttons>
-    <ion-title>Your kids</ion-title>
+    <ion-title>Kids</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-  <ion-card>
+  <ion-card *ngFor="let kid of kids$ | async">
     <ion-card-header>
       <ion-card-title>
-        Adrian
+        {{kid.name}}
       </ion-card-title>
     </ion-card-header>
 
@@ -23,50 +23,25 @@
       <ion-list>
         <ion-item>
           <ion-label>Gender</ion-label>
-          <ion-note slot="end">Male</ion-note>
+          <ion-note slot="end">{{kid.gender}}</ion-note>
         </ion-item>
         <ion-item>
           <ion-label>Date of birth</ion-label>
-          <ion-note slot="end">01.01.2021</ion-note>
+          <ion-note slot="end">{{kid.dateOfBirth}}</ion-note>
         </ion-item>
         <ion-item>
           <ion-label>Current match</ion-label>
-          <ion-note slot="end"><span color="danger">81%</span></ion-note>
+          <ion-note slot="end"><span color="danger">{{kid.summary}}%</span></ion-note>
         </ion-item>
       </ion-list>
-      <ion-button expand="block" [routerLink]="['/details']">Details</ion-button>
+      <ion-button expand="block" [routerLink]="['/menu/details', kid.id]">Details</ion-button>
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>
-        Patryk
-      </ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      <ion-list>
-        <ion-item>
-          <ion-label>Gender</ion-label>
-          <ion-note slot="end">Male</ion-note>
-        </ion-item>
-        <ion-item>
-          <ion-label>Date of birth</ion-label>
-          <ion-note slot="end">01.01.2021</ion-note>
-        </ion-item>
-        <ion-item>
-          <ion-label>Current match</ion-label>
-          <ion-note slot="end"><span color="danger">81%</span></ion-note>
-        </ion-item>
-      </ion-list>
-      <ion-button expand="block" [routerLink]="['/details']">Details</ion-button>
-    </ion-card-content>
-  </ion-card>
 </ion-content>
 
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button>
+  <ion-fab-button (click)="openModal()">
     <ion-icon name="add-outline"></ion-icon>
   </ion-fab-button>
 </ion-fab>
