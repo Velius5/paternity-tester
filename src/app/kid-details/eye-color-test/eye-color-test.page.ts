@@ -3,7 +3,10 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import * as _ from 'lodash';
 import {BabytesterService} from '../../services/babytester.service';
 import {StorageKey, StorageService} from '../../services/storage.service';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from '@angular/router';
+import {KidsService} from "../../services/kids.service";
+import {Kid} from "../../model/kid";
+import {Tests} from "../../model/tests";
 
 @Component({
   selector: 'app-eye-color-test',
@@ -13,13 +16,16 @@ import {Router} from "@angular/router";
 export class EyeColorTestPage implements OnInit {
   step = 0;
   form: FormGroup;
+  kid: Kid;
   results;
   error;
   testModel;
 
   constructor(public babytesterService: BabytesterService,
               public storageService: StorageService,
-              public router: Router) {
+              private kidsService: KidsService,
+              public router: Router,
+              private route: ActivatedRoute) {
     this.babytesterService = babytesterService;
     this.form = new FormGroup({
       father: new FormControl('1', Validators.required),
@@ -30,10 +36,21 @@ export class EyeColorTestPage implements OnInit {
       motherFather: new FormControl('-1'),
       motherMother: new FormControl('-1')
     });
-    this.testModel = _.find(babytesterService.models, (m) => m.id === "eyecolor");
+    this.testModel = _.find(babytesterService.models, (m) => m.id === 'eyecolor');
   }
 
   ngOnInit() {
+    this.route.paramMap.subscribe( paramMap => {
+      const kidId = paramMap.get('id');
+      this.kidsService.getKidById(kidId).then(k => {
+        this.kid = k;
+        if(this.kid.tests.eyeColorTest != null) {
+          this.form.get('kid').setValue(this.kid.tests.eyeColorTest.kidParameterValue);
+          this.results = this.kid.tests.eyeColorTest.results;
+          this.step = 2;
+        }
+      });
+    });
   }
 
   startTest() {
@@ -56,7 +73,12 @@ export class EyeColorTestPage implements OnInit {
           this.error = out;
         } else {
           this.results = {brownPossibility: out[0].prob, bluePossibility: out[1].prob, greenPossibility: out[2].prob};
-          this.storageService.set(StorageKey.EyeColorTest, Math.round(out[this.form.get('kid').value].prob));
+          this.kid.tests.eyeColorTest = {
+            kidParameterValue: this.form.get('kid').value,
+            results: this.results,
+            summary:  Math.round(out[this.form.get('kid').value].prob)
+          };
+          this.kidsService.updateKid(this.kid).then(k => console.log("Test results saved."));
         }
       } else {
         console.log('Error OnCalcQuick');

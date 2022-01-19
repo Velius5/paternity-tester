@@ -1,113 +1,124 @@
-import { Injectable, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import {User} from '../model/user';
+import {Injectable, NgZone} from '@angular/core';
+import {Router} from '@angular/router';
+import {AngularFireAuth} from '@angular/fire/compat/auth';
+import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/compat/firestore';
+import {User, UserSource} from '../model/user';
 import firebase from 'firebase/compat/app';
-import {StorageKey, StorageService} from "./storage.service";
+import {StorageKey, StorageService} from './storage.service';
+import {BehaviorSubject} from "rxjs";
 
-@Injectable({
-  providedIn: 'root'
-})
-
+@Injectable()
 export class AuthenticationService {
-  userData: any;
+  userData$ = new BehaviorSubject(null);
 
   constructor(
-    public afStore: AngularFirestore,
-    public ngFireAuth: AngularFireAuth,
-    public router: Router,
-    public ngZone: NgZone,
-    public storageService: StorageService
+    private afStore: AngularFirestore,
+    private ngFireAuth: AngularFireAuth,
+    private router: Router,
+    private ngZone: NgZone,
+    private storageService: StorageService
   ) {
     this.ngFireAuth.authState.subscribe(user => {
       if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user'));
+        this.userData$.next(user);
         this.storageService.setObject(StorageKey.User, user);
       } else {
-        localStorage.setItem('user', null);
-        JSON.parse(localStorage.getItem('user'));
         this.storageService.remove(StorageKey.User);
       }
     });
   }
 
   // Login in with email/password
-  SignIn(email, password) {
-    return this.ngFireAuth.signInWithEmailAndPassword(email, password);
+  login(email, password) {
+    return this.ngFireAuth.signInWithEmailAndPassword(email, password).then(loginUserResponse => {
+      this.storageService.setObject(StorageKey.User, loginUserResponse.user);
+      this.userData$.next(loginUserResponse.user);
+    });
   }
 
   // Register user with email/password
-  RegisterUser(email, password) {
-    return this.ngFireAuth.createUserWithEmailAndPassword(email, password);
+  signup(email, password) {
+    return this.ngFireAuth.createUserWithEmailAndPassword(email, password)
+      .then(operation => {
+        this.saveUserData(operation.user, UserSource.DIRECT);
+      });
   }
 
   // Email verification when new user register
-  SendVerificationMail() {
+  sendVerificationMail() {
     return this.ngFireAuth.currentUser.then(u => u.sendEmailVerification())
       .then(() => {
         this.router.navigate(['verify-email']);
-      })
+      });
   }
 
   // Recover password
-  PasswordRecover(passwordResetEmail) {
+  recoverPassword(passwordResetEmail) {
     return this.ngFireAuth.sendPasswordResetEmail(passwordResetEmail);
   }
 
   // Returns true when user is looged in
-  get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return (user !== null && user.emailVerified !== false) ? true : false;
+  get isLoggedIn(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      if(this.userData$.getValue() != null) {
+        resolve(true);
+      }
+      resolve(false);
+    });
   }
 
   // Returns true when user's email is verified
-  get isEmailVerified(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return (user.emailVerified !== false) ? true : false;
+  get isEmailVerified(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.storageService.get(StorageKey.User).then(u => {
+        if(u.emailVerified) {
+          resolve(true);
+        }
+        reject(u);
+      });
+    });
   }
 
-  // Sign in with Gmail
-  GoogleAuth() {
-    return this.AuthLogin(new firebase.auth.GoogleAuthProvider());
+  loginUsingGoogleAccount() {
+    return this.loginUsingProvider(new firebase.auth.GoogleAuthProvider());
   }
 
   // Auth providers
-  AuthLogin(provider) {
+  loginUsingProvider(provider) {
     return this.ngFireAuth.signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
           this.router.navigate(['menu']);
         });
-        this.SetUserData(result.user);
-      }).catch((error) => {
-        window.alert(error);
+        this.saveUserData(result.user, UserSource.GOOGLE);
+      }).catch((err) => {
+        window.alert(err);
       });
   }
 
-  // Store user in localStorage
-  SetUserData(user) {
+  // Store created user
+  saveUserData(user, source: UserSource) {
     const userRef: AngularFirestoreDocument<any> = this.afStore.doc(`users/${user.uid}`);
     const userData: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
-      emailVerified: user.emailVerified
+      emailVerified: user.emailVerified,
+      createdAt: Date.now(),
+      source
     };
     this.storageService.setObject(StorageKey.User, userData);
+    this.userData$.next(userData);
     return userRef.set(userData, {
       merge: true
     });
   }
 
-  // Sign-out
-  SignOut() {
+  logout() {
     return this.ngFireAuth.signOut().then(() => {
-      localStorage.removeItem('user');
-      this.storageService.remove(StorageKey.User);
+      this.storageService.clear();
+      this.userData$.next(null);
       this.router.navigate(['login']);
     });
   }
