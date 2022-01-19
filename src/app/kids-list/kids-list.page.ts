@@ -4,6 +4,7 @@ import {Kid} from '../model/kid';
 import {Observable} from 'rxjs';
 import {ModalController, ToastController} from '@ionic/angular';
 import {AddKidModalComponent} from './add-kid-modal/add-kid-modal.component';
+import {StorageKey, StorageService} from "../services/storage.service";
 
 
 @Component({
@@ -15,6 +16,7 @@ export class KidsListPage implements OnInit {
   public kids$: Observable<Kid[][]>;
 
   constructor(private kidsService: KidsService,
+              private storageService: StorageService,
               private modalController: ModalController,
               private toastController: ToastController) {
   }
@@ -24,30 +26,33 @@ export class KidsListPage implements OnInit {
   }
 
   async openModal(kid: Kid) {
-    const modal = await this.modalController.create({
-      component: AddKidModalComponent,
-      componentProps: {
-        kid,
-      },
-      breakpoints: [0.2, 0.5, 0.75, 1],
-      initialBreakpoint: 1,
+    let kidsCounter = 0;
+    await this.storageService.getObject(StorageKey.Kids).then((kidsList: Kid[][]) => {
+      kidsCounter = kidsList.length;
     });
+    if(kid != null || kidsCounter < 101) {
+      const modal = await this.modalController.create({
+        component: AddKidModalComponent,
+        componentProps: {
+          kid,
+        },
+        breakpoints: [0.2, 0.5, 0.75, 1],
+        initialBreakpoint: 1,
+      });
 
-    modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned.data !== 'Cancel') {
-        console.log('saved');
-      }
-      else {
-        console.log('canceled');
-      }
-    });
-    return await modal.present();
+      modal.onDidDismiss().then((dataReturned) => {
+      });
+      return await modal.present();
+    } else {
+      this.errorKidLimitToast();
+    }
+    return null;
   }
 
   async errorKidLimitToast() {
     const toast = await this.toastController.create({
       header: 'Kid cannot be added',
-      message: 'There is a limit of 10 kids per account',
+      message: 'There is a limit of 100 kids per account. Please, contact us to extend this limit.',
       duration: 3000,
       position: 'middle'
     });
