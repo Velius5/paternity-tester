@@ -46,7 +46,12 @@ export class AddKidModalComponent implements OnInit {
           tests: {
             eyeColorTest: null,
             hairColorTest: null,
-            bloodTest: null
+            bloodTest: null,
+            peculiaritiesCleftChinTest: null,
+            peculiaritiesEarLobeTest: null,
+            peculiaritiesWidowsPeakTest: null,
+            peculiaritiesDimplesTest: null,
+            peculiaritiesFrecklesTest: null
           },
           summary: null
         };

@@ -14,17 +14,22 @@
   <ion-card>
     <img src="./assets/eye-color-test.jpg" />
     <ion-card-header>
-      <ion-card-subtitle>1 credit</ion-card-subtitle>
+      <ion-card-subtitle>Free test</ion-card-subtitle>
       <ion-card-title>Eye color test</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      Depending on your parent’s eye color, how dominant that eye color is, and the variation of how other genes interact plays a huge role in what eye color you are born with. In some cases this test can give you a 100% confidence that you are not a father.
+      Eye color is determined by variations in a person’s genes.
+      Most of the genes associated with eye color are involved in the production, transport, or storage of a pigment called melanin.
+      Eye color is directly related to the amount and quality of melanin in the front layers of the iris.
+      People with brown eyes have a large amount of melanin in the iris, while people with blue eyes have much less of this pigment.
+      Depending on your parent’s eye color, how dominant that eye color is, and the variation of how other genes interact plays a huge role in what eye color you are born with.
+      In some cases this test can give you a 100% confidence that you are not a father.
       <ion-button expand="block" (click)="startTest()">Start test</ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>
 
-<ion-content *ngIf="step == 1">
+<ion-content *ngIf="step == 1 && !loading">
 
   <form [formGroup]="form" (ngSubmit)="checkEyeColor()">
 
@@ -111,7 +116,7 @@
 
 </ion-content>
 
-<ion-content [fullscreen]="true" *ngIf="step == 2">
+<ion-content [fullscreen]="true" *ngIf="step == 2 && !loading">
 
   <ion-text style="text-align: center;">
     <div class="content">
@@ -143,8 +148,18 @@
     <p>Brown: {{results.brownPossibility}}% of chance</p>
   </div>
 
+  <div class="content">
+    <ion-button type="submit" (click)="testAgain()" expand="block" color="light">Test again</ion-button>
+  </div>
 
 
 
 
 </ion-content>
+
+<ion-content [fullscreen]="true" *ngIf="loading">
+  <div class="center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+</ion-content>
+

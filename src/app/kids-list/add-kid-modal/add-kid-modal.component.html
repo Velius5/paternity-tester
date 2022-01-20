@@ -1,5 +1,6 @@
 <ion-content class="ion-padding" overflow-scroll="true">
-  <h3>Add kid</h3>
+  <h3 *ngIf="!kid">Add kid</h3>
+  <h3 *ngIf="kid">Modify kid</h3>
   <form [formGroup]="form" (ngSubmit)="save()">
 
     <ion-row>
