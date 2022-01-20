@@ -29,7 +29,7 @@
 
 <ion-content *ngIf="step == 1">
 
-  <form [formGroup]="form" (ngSubmit)="checkEyeColor()">
+  <form [formGroup]="form" (ngSubmit)="checkHairColor()">
 
     <h3>Required</h3>
     <ion-list>
@@ -153,6 +153,14 @@
      || form.get('kid').value == 3 && results.strawberryBlondPossibility == 0
      || form.get('kid').value == 4 && results.blondPossibility == 0
 ">You definitely need to check if you are a father.</h5>
+      <h6>Attention!</h6>
+<!--      <h6>You should put grandparents data for better results.</h6>-->
+      <h6>There is a very small chance (less than 1%) that your kid can have this hair color, so you can't base only on this test.</h6>
+<!-- Color of our hair base on two allels which we have in our genotype.&ndash;&gt;-->
+<!--        For example if two parents have black hair and one of them has hidden blonde allel,-->
+<!--        then it is possible that his child could be a blonde. This is rare situation, but it is possible.-->
+<!--        If you know that both of your parents have black hair, then for sure you can't have blonde allel and your kids can have only black hair.-->
+<!--      </h6>-->
       <h5 *ngIf="
       form.get('kid').value == 0 && results.blackPossibility > 0
      || form.get('kid').value == 1 && results.brownPossibility > 0
@@ -174,4 +182,15 @@
     <p>Blond: {{results.blondPossibility}}% of chance</p>
   </div>
 
+  <div class="content">
+    <ion-button type="submit" (click)="testAgain()" expand="block" color="light">Test again</ion-button>
+  </div>
+
+</ion-content>
+
+
+<ion-content [fullscreen]="true" *ngIf="loading">
+  <div class="center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
 </ion-content>

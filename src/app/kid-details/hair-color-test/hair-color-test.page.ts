@@ -3,6 +3,9 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import * as _ from 'lodash';
 import {BabytesterService} from '../../services/babytester.service';
 import {StorageKey, StorageService} from '../../services/storage.service';
+import {Kid} from "../../model/kid";
+import {KidsService} from "../../services/kids.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-hair-color-test',
@@ -12,13 +15,18 @@ import {StorageKey, StorageService} from '../../services/storage.service';
 export class HairColorTestPage implements OnInit {
   step = 0;
   form: FormGroup;
+  kid: Kid;
   results;
   error;
   testModel;
+  loading: boolean = false;
 
 
-  constructor(public babytesterService: BabytesterService,
-              public storageService: StorageService) {
+  constructor(private babytesterService: BabytesterService,
+              private storageService: StorageService,
+              private kidsService: KidsService,
+              public router: Router,
+              private route: ActivatedRoute) {
     this.babytesterService = babytesterService;
     this.form = new FormGroup({
       father: new FormControl('', Validators.required),
@@ -33,41 +41,73 @@ export class HairColorTestPage implements OnInit {
   }
 
   ngOnInit() {
+    this.route.paramMap.subscribe( paramMap => {
+      const kidId = paramMap.get('id');
+      this.kidsService.getKidById(kidId).then(k => {
+        this.kid = k;
+        if(this.kid.tests.hairColorTest != null) {
+          this.form.get('kid').setValue(this.kid.tests.hairColorTest.kidParameterValue);
+          this.results = this.kid.tests.hairColorTest.results;
+          this.step = 2;
+        }
+      });
+    });
   }
 
   startTest() {
     this.step = 1;
   }
 
-  checkEyeColor() {
+  checkHairColor() {
     if(!this.form.invalid) {
-      if (this.testModel) {
-        const out = this.babytesterService.getResultsQuick(
-          this.testModel,
-          this.form.get('father').value,
-          this.form.get('mother').value,
-          this.form.get('fatherFather').value,
-          this.form.get('fatherMother').value,
-          this.form.get('motherFather').value,
-          this.form.get('motherMother').value
-        );
-        if (out[0].fail) {
-          this.error = out;
+      this.loading = true;
+      setTimeout(() => {
+        if (this.testModel) {
+          const out = this.babytesterService.getResultsQuick(
+            this.testModel,
+            this.form.get('father').value,
+            this.form.get('mother').value,
+            this.form.get('fatherFather').value,
+            this.form.get('fatherMother').value,
+            this.form.get('motherFather').value,
+            this.form.get('motherMother').value
+          );
+          if (out[0].fail) {
+            this.error = out;
+          } else {
+            this.results = {
+              blackPossibility: out[0].prob,
+              brownPossibility: out[1].prob,
+              redPossibility: out[2].prob,
+              strawberryBlondPossibility: out[3].prob,
+              blondPossibility: out[4].prob
+            };
+            this.kid.tests.hairColorTest = {
+              kidParameterValue: this.form.get('kid').value,
+              results: this.results,
+              summary:  Math.round(out[this.form.get('kid').value].prob)
+            };
+            this.kidsService.updateKid(this.kid).then(k => {
+              this.step = 2;
+              this.loading = false;
+            });
+          }
         } else {
-          this.results = {
-            blackPossibility: out[0].prob,
-            brownPossibility: out[1].prob,
-            redPossibility: out[2].prob,
-            strawberryBlondPossibility: out[3].prob,
-            blondPossibility: out[4].prob
-          };
-          this.storageService.set(StorageKey.HairColorTest, Math.round(out[this.form.get('kid').value].prob));
+          console.log('Error OnCalcQuick');
         }
-      } else {
-        console.log('Error OnCalcQuick');
-      }
-      this.step = 2;
+        this.step = 2;
+      }, this.getRandomInt(2000, 4000));
     }
+  }
+
+  testAgain() {
+    this.step = 0;
+  }
+
+  getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
   }
 
 

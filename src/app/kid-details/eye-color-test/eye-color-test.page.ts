@@ -29,8 +29,8 @@ export class EyeColorTestPage implements OnInit {
               private route: ActivatedRoute) {
     this.babytesterService = babytesterService;
     this.form = new FormGroup({
-      father: new FormControl('1', Validators.required),
-      mother: new FormControl('2', Validators.required),
+      father: new FormControl('', Validators.required),
+      mother: new FormControl('', Validators.required),
       kid: new FormControl('', Validators.required),
       fatherFather: new FormControl('-1'),
       fatherMother: new FormControl('-1'),
@@ -76,14 +76,14 @@ export class EyeColorTestPage implements OnInit {
             this.error = out;
           } else {
             this.results = {
-              brownPossibility: (out[0].prob === 0 && this.form.get('father').value === '1' && this.form.get('mother').value === '1') ? 1 : out[0].prob,
-              bluePossibility: (out[0].prob === 0 && this.form.get('father').value === '1' && this.form.get('mother').value === '1') ?  out[1].prob - 1 : out[1].prob,
+              brownPossibility: out[0].prob,
+              bluePossibility: out[1].prob,
               greenPossibility: out[2].prob
             };
             this.kid.tests.eyeColorTest = {
               kidParameterValue: this.form.get('kid').value,
               results: this.results,
-              summary:  (this.form.get('kid').value === '0' && out[0].prob === 0 && this.form.get('father').value === '1' && this.form.get('mother').value === '1') ? 1 : Math.round(out[this.form.get('kid').value].prob)
+              summary:  Math.round(out[this.form.get('kid').value].prob)
             };
             this.kidsService.updateKid(this.kid).then(k => {
               this.step = 2;
@@ -98,7 +98,7 @@ export class EyeColorTestPage implements OnInit {
   }
 
   testAgain() {
-    this.step = 1;
+    this.step = 0;
   }
 
   getRandomInt(min, max) {

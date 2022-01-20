@@ -103,7 +103,7 @@ export class PeculiaritiesTestPage implements OnInit {
   }
 
   testAgain() {
-    this.step = 1;
+    this.step = 0;
   }
 
   getRandomInt(min, max) {
