@@ -14,6 +14,10 @@ const routes: Routes = [
   {
     path: 'hair-color-test',
     loadChildren: () => import('./hair-color-test/hair-color-test.module').then(m => m.HairColorTestPageModule)
+  },
+  {
+    path: 'peculiarities-test/:type',
+    loadChildren: () => import('./peculiarities-test/peculiarities-test.module').then(m => m.PeculiaritiesTestPageModule)
   }
 ];
 

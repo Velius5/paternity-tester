@@ -4,23 +4,27 @@ import * as _ from 'lodash';
 import {BabytesterService} from '../../services/babytester.service';
 import {StorageKey, StorageService} from '../../services/storage.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {KidsService} from "../../services/kids.service";
-import {Kid} from "../../model/kid";
-import {Tests} from "../../model/tests";
+import {KidsService} from '../../services/kids.service';
+import {Kid} from '../../model/kid';
+import {Tests} from '../../model/tests';
+import {PeculiaritiesTestType} from '../../model/peculiarities-test-type';
+import * as moment from 'moment';
 
 @Component({
-  selector: 'app-eye-color-test',
-  templateUrl: './eye-color-test.page.html',
-  styleUrls: ['./eye-color-test.page.scss'],
+  selector: 'app-peculiarities-test',
+  templateUrl: './peculiarities-test.page.html',
+  styleUrls: ['./peculiarities-test.page.scss'],
 })
-export class EyeColorTestPage implements OnInit {
+export class PeculiaritiesTestPage implements OnInit {
+  pecularitiesTestType: PeculiaritiesTestType;
   step = 0;
   form: FormGroup;
   kid: Kid;
+  kidAgeInMonths: number;
   results;
   error;
   testModel;
-  loading: boolean = false;
+  loading = false;
 
   constructor(public babytesterService: BabytesterService,
               public storageService: StorageService,
@@ -28,16 +32,19 @@ export class EyeColorTestPage implements OnInit {
               public router: Router,
               private route: ActivatedRoute) {
     this.babytesterService = babytesterService;
+    this.route.paramMap.subscribe( paramMap => {
+      this.pecularitiesTestType = paramMap.get('type') as PeculiaritiesTestType;
+    });
     this.form = new FormGroup({
-      father: new FormControl('1', Validators.required),
-      mother: new FormControl('2', Validators.required),
+      father: new FormControl('', Validators.required),
+      mother: new FormControl('', Validators.required),
       kid: new FormControl('', Validators.required),
       fatherFather: new FormControl('-1'),
       fatherMother: new FormControl('-1'),
       motherFather: new FormControl('-1'),
       motherMother: new FormControl('-1')
     });
-    this.testModel = _.find(babytesterService.models, (m) => m.id === 'eyecolor');
+    this.testModel = _.find(babytesterService.models, (m) => m.id === 'cleftchin');
   }
 
   ngOnInit() {
@@ -45,9 +52,10 @@ export class EyeColorTestPage implements OnInit {
       const kidId = paramMap.get('id');
       this.kidsService.getKidById(kidId).then(k => {
         this.kid = k;
-        if(this.kid.tests.eyeColorTest != null) {
-          this.form.get('kid').setValue(this.kid.tests.eyeColorTest.kidParameterValue);
-          this.results = this.kid.tests.eyeColorTest.results;
+        this.kidAgeInMonths = moment(new Date()).diff(moment(this.kid.dateOfBirth, 'DD-MM-YYYY'), 'months', true);
+        if(this.kid.tests[this.pecularitiesTestType] != null) {
+          this.form.get('kid').setValue(this.kid.tests[this.pecularitiesTestType].kidParameterValue);
+          this.results = this.kid.tests[this.pecularitiesTestType].results;
           this.step = 2;
         }
       });
@@ -58,7 +66,7 @@ export class EyeColorTestPage implements OnInit {
     this.step = 1;
   }
 
-  checkEyeColor() {
+  check() {
     if(!this.form.invalid) {
       this.loading = true;
       setTimeout(() => {
@@ -75,15 +83,12 @@ export class EyeColorTestPage implements OnInit {
           if (out[0].fail) {
             this.error = out;
           } else {
-            this.results = {
-              brownPossibility: (out[0].prob === 0 && this.form.get('father').value === '1' && this.form.get('mother').value === '1') ? 1 : out[0].prob,
-              bluePossibility: (out[0].prob === 0 && this.form.get('father').value === '1' && this.form.get('mother').value === '1') ?  out[1].prob - 1 : out[1].prob,
-              greenPossibility: out[2].prob
-            };
-            this.kid.tests.eyeColorTest = {
+            this.results = {yesPossibility: out[0].prob, noPossibility: out[1].prob};
+            console.log(this.results);
+            this.kid.tests[this.pecularitiesTestType] = {
               kidParameterValue: this.form.get('kid').value,
               results: this.results,
-              summary:  (this.form.get('kid').value === '0' && out[0].prob === 0 && this.form.get('father').value === '1' && this.form.get('mother').value === '1') ? 1 : Math.round(out[this.form.get('kid').value].prob)
+              summary:  Math.round(out[this.form.get('kid').value].prob)
             };
             this.kidsService.updateKid(this.kid).then(k => {
               this.step = 2;
@@ -105,6 +110,10 @@ export class EyeColorTestPage implements OnInit {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  youngerThen(months: number) {
+    return this.kidAgeInMonths < months;
   }
 
 }

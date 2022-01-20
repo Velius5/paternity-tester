@@ -1,0 +1,218 @@
+<ion-header>
+  <ion-toolbar class="centered-toolbar">
+    <ion-title class="centered-title" size="small">Paternity Tester</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="danger"></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="pecularitiesTestType == 'peculiaritiesCleftChinTest'">Cleft chin test</ion-title>
+    <ion-title *ngIf="pecularitiesTestType == 'peculiaritiesEarLobeTest'">Ear lobe test</ion-title>
+    <ion-title *ngIf="pecularitiesTestType == 'peculiaritiesWidowsPeakTest'">Widow's peak test</ion-title>
+    <ion-title *ngIf="pecularitiesTestType == 'peculiaritiesDimplesTest'">Dimples test</ion-title>
+    <ion-title *ngIf="pecularitiesTestType == 'peculiaritiesFrecklesTest'">Freckles test</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen *ngIf="step == 0">
+  <ion-card *ngIf="pecularitiesTestType == 'peculiaritiesCleftChinTest'">
+    <img src="./assets/cleftchin-test.jpg" />
+    <ion-card-header>
+      <ion-card-subtitle>Free test</ion-card-subtitle>
+      <ion-card-title>Cleft chin test</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      The shape of your chin is determined before you're born.
+      When a fetus develops, its jawbone starts growing on both sides of the head and meets in the middle of the chin.
+      In people who have a chin cleft, the two sides of the lower jaw don't completely fuse together, leaving a little space, or a cleft.
+      The science behind cleft chins is complicated enough that no one can predict with 100% confidence whether someone
+      will have a cleft chin or not - even if we look at all of their DNA. Despite this we also know that
+      if two parents had smooth chins, their kids almost always have smooth chins.
+      <ion-button expand="block" (click)="startTest()">Start test</ion-button>
+    </ion-card-content>
+  </ion-card>
+<ion-card *ngIf="pecularitiesTestType == 'peculiaritiesEarLobeTest'">
+  <img src="./assets/ear-lobe-test.jpg" />
+  <ion-card-header>
+    <ion-card-subtitle>Free test</ion-card-subtitle>
+    <ion-card-title>Ear lobe test</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    The primary form of the gene that determines the shape of the earlobe is known as an allele.
+    An allele is a gene that is found at a specific position on a chromosome.
+    It has been established that all genes in our body have two copies, one from each parent.
+    Unattached ear lobe can appear after third month of life, so this test will be blocked if your kid is younger then that.
+    <ion-button [disabled]="youngerThen(3)" expand="block" (click)="startTest()">Start test</ion-button>
+  </ion-card-content>
+</ion-card>
+<ion-card *ngIf="pecularitiesTestType == 'peculiaritiesWidowsPeakTest'">
+  <img src="./assets/widows-peak-test.jpg" />
+  <ion-card-header>
+    <ion-card-subtitle>Free test</ion-card-subtitle>
+    <ion-card-title>Widow's peak test</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    Some people have a prominent V-shaped point at the front of their hairline, called a widow's peak,
+    while other people have a hairline that goes straight across.
+    <ion-button expand="block" (click)="startTest()">Start test</ion-button>
+  </ion-card-content>
+</ion-card>
+<ion-card *ngIf="pecularitiesTestType == 'peculiaritiesDimplesTest'">
+  <img src="./assets/dimples-test.jpg" />
+  <ion-card-header>
+    <ion-card-subtitle>Free test</ion-card-subtitle>
+    <ion-card-title>Dimples test</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    A dimple is an anomaly of the muscle that causes a dent in the cheek, especially when the individual smiles.
+    Some people have dimples in both cheeks, others in just one cheek.
+    Dimples are usually considered a dominant genetic trait, which means that one copy of the altered gene in each cell is sufficient to cause dimples.
+    Babies are likely to have dimples caused by baby fat in their cheeks.
+    When they lose their baby fat as they get older, their dimples could disappear.
+    Other children do not have them at birth, but may develop them later in childhood.
+    That is why this test is available only for at least 2-years old kids.
+    <ion-button [disabled]="youngerThen(24)" expand="block" (click)="startTest()">Start test</ion-button>
+  </ion-card-content>
+</ion-card>
+<ion-card *ngIf="pecularitiesTestType == 'peculiaritiesFrecklesTest'">
+  <img src="./assets/freckles-test.jpg" />
+  <ion-card-header>
+    <ion-card-subtitle>Free test</ion-card-subtitle>
+    <ion-card-title>Freckles test</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    Parents with freckles often have kids with freckles. But not always.
+    This is because the inheritance of freckles is complex.
+    There are many genes involved, and they can interact with one another in lots of different ways. Some combinations give freckles, some don’t.
+    For example, one gene, MC1R, is tied to both freckles and red hair. If both copies of the gene are changed, you’re a redhead.
+    If only one copy is changed, you’ll get freckles—but not always. And scientists still don’t know why.
+    Newborn babies never have freckles. Freckles first show up in children when they're between two and four years old,
+    because their skin needs a certain amount of time in the sun to start making those melanin spots, those "angels' kisses."
+    That is why this test is available only for at least 4-years old kids.
+    <ion-button expand="block" [disabled]="youngerThen(48)" (click)="startTest()">Start test</ion-button>
+  </ion-card-content>
+</ion-card>
+</ion-content>
+
+<ion-content *ngIf="step == 1 && !loading">
+
+  <form [formGroup]="form" (ngSubmit)="check()">
+
+    <h3>Required</h3>
+    <ion-list>
+      <ion-item>
+        <ion-label>Father</ion-label>
+        <ion-select value="" formControlName="father">
+          <ion-select-option value="0">Yes</ion-select-option>
+          <ion-select-option value="1">No</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Mother</ion-label>
+        <ion-select value="" formControlName="mother">
+          <ion-select-option value="0">Yes</ion-select-option>
+          <ion-select-option value="1">No</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Kid</ion-label>
+        <ion-select value="" formControlName="kid">
+          <ion-select-option value="0">Yes</ion-select-option>
+          <ion-select-option value="1">No</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+    </ion-list>
+
+    <h3>Additional (better results)</h3>
+    <ion-list>
+
+      <ion-item>
+        <ion-label>Father's father</ion-label>
+        <ion-select value="-1" formControlName="fatherFather">
+          <ion-select-option value="-1">Unknown</ion-select-option>
+          <ion-select-option value="0">Yes</ion-select-option>
+          <ion-select-option value="1">No</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Father's mother</ion-label>
+        <ion-select value="-1" formControlName="fatherMother">
+          <ion-select-option value="-1">Unknown</ion-select-option>
+          <ion-select-option value="0">Yes</ion-select-option>
+          <ion-select-option value="1">No</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Mother's father</ion-label>
+        <ion-select value="-1" formControlName="motherFather">
+          <ion-select-option value="-1">Unknown</ion-select-option>
+          <ion-select-option value="0">Yes</ion-select-option>
+          <ion-select-option value="1">No</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Mother's mother</ion-label>
+        <ion-select value="-1" formControlName="motherMother">
+          <ion-select-option value="-1">Unknown</ion-select-option>
+          <ion-select-option value="0">Yes</ion-select-option>
+          <ion-select-option value="1">No</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+
+    </ion-list>
+
+    <ion-button type="submit" [disabled]="form.invalid" expand="block">Check it</ion-button>
+
+  </form>
+
+</ion-content>
+
+<ion-content [fullscreen]="true" *ngIf="step == 2 && !loading">
+
+  <ion-text style="text-align: center;">
+    <div class="content">
+      <h4>There was a </h4>
+      <h1 *ngIf="form.get('kid').value == '0'">{{results.yesPossibility}}%</h1>
+      <h1 *ngIf="form.get('kid').value == '1'">{{results.noPossibility}}%</h1>
+      <h4>of chance that your kid
+        <span *ngIf="form.get('kid').value == '0'">will have</span>
+        <span *ngIf="form.get('kid').value == '1'">will not have</span>
+        a
+        <span *ngIf="pecularitiesTestType == 'peculiaritiesCleftChinTest'">cleft chin.</span>
+        <span *ngIf="pecularitiesTestType == 'peculiaritiesEarLobeTest'">ear lobe.</span>
+        <span *ngIf="pecularitiesTestType == 'peculiaritiesWidowsPeakTest'">widow's peak.</span>
+        <span *ngIf="pecularitiesTestType == 'peculiaritiesDimplesTest'">dimples.</span>
+        <span *ngIf="pecularitiesTestType == 'peculiaritiesFrecklesTest'">freckles.</span>
+      </h4>
+      <br /> <br />
+      <h5 *ngIf="form.get('kid').value == 0 && results.yesPossibility == 0
+     || form.get('kid').value == 1 && results.noPossibility == 0">You definitely need to check if you are a father.</h5>
+      <h5 *ngIf="form.get('kid').value == 0 && results.yesPossibility > 0
+     || form.get('kid').value == 1 && results.noPossibility > 0">It means that it is possible that you are a father.</h5>
+      <h5>Do another tests to be sure.</h5>
+      <br /><br />
+    </div>
+  </ion-text>
+
+  <div class="content">
+    <ion-button type="submit" (click)="testAgain()" expand="block" color="light">Test again</ion-button>
+  </div>
+
+
+
+
+</ion-content>
+
+<ion-content [fullscreen]="true" *ngIf="loading">
+  <div class="center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+</ion-content>
+
