@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import {AuthenticationService} from '../services/authentication.service';
 import {StorageKey, StorageService} from '../services/storage.service';
 import {KidsService} from '../services/kids.service';
+import {ToastController} from "@ionic/angular";
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginPage implements OnInit {
     public authService: AuthenticationService,
     public router: Router,
     public storageService: StorageService,
-    private kidsService: KidsService
+    private kidsService: KidsService,
+    private toastController: ToastController
   ) {}
 
   ngOnInit() {
@@ -32,8 +34,17 @@ export class LoginPage implements OnInit {
       .then((res) => {
         this.router.navigate(['tutorial']);
       }).catch((error) => {
-        window.alert(error.message);
+        this.showLoginFailedToast();
       });
+  }
+
+  async showLoginFailedToast() {
+    const toast = await this.toastController.create({
+      message: 'Login failed. Email or password is wrong.',
+      duration: 3000,
+      position: 'middle'
+    });
+    toast.present();
   }
 
 }

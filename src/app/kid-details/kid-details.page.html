@@ -23,53 +23,53 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-card>
-      <ion-item [routerLink]="['/menu/details', kid.id, 'eye-color-test']">
+    <ion-card class="kid-details-tests-list">
+      <ion-item [routerLink]="['/menu/details', kid.id, 'eye-color-test']" lines="none">
         <ion-icon name="eye-outline" slot="start"></ion-icon>
         <ion-label>Eye color test <span *ngIf="kid.tests.eyeColorTest" [style.color]="kid.tests.eyeColorTest.summary == 0 ? 'red': 'black'">({{kid.tests.eyeColorTest.summary}}%)</span></ion-label>
       </ion-item>
 
-      <ion-item [routerLink]="['/menu/details', kid.id, 'hair-color-test']">
+      <ion-item [routerLink]="['/menu/details', kid.id, 'hair-color-test']" lines="none">
         <ion-icon name="recording-outline" slot="start"></ion-icon>
         <ion-label>Hair color test <span *ngIf="kid.tests.hairColorTest" [style.color]="kid.tests.hairColorTest.summary == 0 ? 'red': 'black'">({{kid.tests.hairColorTest.summary}}%)</span></ion-label>
       </ion-item>
 
-      <ion-item href="#">
+      <ion-item [routerLink]="['/menu/details', kid.id, 'blood-test']" lines="none">
         <ion-icon name="water-outline" slot="start"></ion-icon>
-        <ion-label>Blood test</ion-label>
+        <ion-label>Blood test <span *ngIf="kid.tests.bloodTest" [style.color]="kid.tests.bloodTest.summary == 0 ? 'red': 'black'">({{kid.tests.bloodTest.summary}}%)</span></ion-label>
       </ion-item>
 
-      <ion-item [routerLink]="['/menu/details', kid.id, 'peculiarities-test', 'peculiaritiesCleftChinTest']">
+      <ion-item [routerLink]="['/menu/details', kid.id, 'peculiarities-test', 'peculiaritiesCleftChinTest']" lines="none">
         <ion-icon name="invert-mode-outline" slot="start"></ion-icon>
         <ion-label>Cleft chin test <span *ngIf="kid.tests.peculiaritiesCleftChinTest" [style.color]="kid.tests.peculiaritiesCleftChinTest.summary == 0 ? 'red': 'black'">({{kid.tests.peculiaritiesCleftChinTest.summary}}%)</span></ion-label>
       </ion-item>
 
-      <ion-item [routerLink]="['/menu/details', kid.id, 'peculiarities-test', 'peculiaritiesEarLobeTest']">
+      <ion-item [routerLink]="['/menu/details', kid.id, 'peculiarities-test', 'peculiaritiesEarLobeTest']" lines="none">
         <ion-icon name="invert-mode-outline" slot="start"></ion-icon>
         <ion-label>Ear lobe test <span *ngIf="kid.tests.peculiaritiesEarLobeTest" [style.color]="kid.tests.peculiaritiesEarLobeTest.summary == 0 ? 'red': 'black'">({{kid.tests.peculiaritiesEarLobeTest.summary}}%)</span></ion-label>
       </ion-item>
 
-      <ion-item [routerLink]="['/menu/details', kid.id, 'peculiarities-test', 'peculiaritiesWidowsPeakTest']">
+      <ion-item [routerLink]="['/menu/details', kid.id, 'peculiarities-test', 'peculiaritiesWidowsPeakTest']" lines="none">
         <ion-icon name="invert-mode-outline" slot="start"></ion-icon>
         <ion-label>Widow's peak test <span *ngIf="kid.tests.peculiaritiesWidowsPeakTest" [style.color]="kid.tests.peculiaritiesWidowsPeakTest.summary == 0 ? 'red': 'black'">({{kid.tests.peculiaritiesWidowsPeakTest.summary}}%)</span></ion-label>
       </ion-item>
 
-      <ion-item [routerLink]="['/menu/details', kid.id, 'peculiarities-test', 'peculiaritiesDimplesTest']">
+      <ion-item [routerLink]="['/menu/details', kid.id, 'peculiarities-test', 'peculiaritiesDimplesTest']" lines="none">
         <ion-icon name="invert-mode-outline" slot="start"></ion-icon>
         <ion-label>Dimples test <span *ngIf="kid.tests.peculiaritiesDimplesTest" [style.color]="kid.tests.peculiaritiesDimplesTest.summary == 0 ? 'red': 'black'">({{kid.tests.peculiaritiesDimplesTest.summary}}%)</span></ion-label>
       </ion-item>
 
-      <ion-item [routerLink]="['/menu/details', kid.id, 'peculiarities-test', 'peculiaritiesFrecklesTest']">
+      <ion-item [routerLink]="['/menu/details', kid.id, 'peculiarities-test', 'peculiaritiesFrecklesTest']" lines="none">
         <ion-icon name="invert-mode-outline" slot="start"></ion-icon>
         <ion-label>Freckles test <span *ngIf="kid.tests.peculiaritiesFrecklesTest" [style.color]="kid.tests.peculiaritiesFrecklesTest.summary == 0 ? 'red': 'black'">({{kid.tests.peculiaritiesFrecklesTest.summary}}%)</span></ion-label>
       </ion-item>
 
-      <ion-item class="disabled" (click)="availableSoonToast()">
+      <ion-item class="disabled" (click)="availableSoonToast()" lines="none">
         <ion-icon name="male-female-outline" slot="start"></ion-icon>
         <ion-label>Chinese gender test</ion-label>
       </ion-item>
 
-      <ion-item class="disabled" (click)="availableSoonToast()">
+      <ion-item class="disabled" (click)="availableSoonToast()" lines="none">
         <ion-icon name="scan-outline" slot="start"></ion-icon>
         <ion-label>Face shape test</ion-label>
       </ion-item>

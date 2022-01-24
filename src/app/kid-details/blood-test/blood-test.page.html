@@ -1,0 +1,132 @@
+<ion-header>
+  <ion-toolbar class="centered-toolbar">
+    <ion-title class="centered-title" size="small">Paternity Tester</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="danger"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Blood test</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen *ngIf="step == 0">
+  <ion-card>
+    <img src="./assets/blood-test.jpg" />
+    <ion-card-header>
+      <ion-card-subtitle>Free test</ion-card-subtitle>
+      <ion-card-title>Blood test</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      In the ABO blood typing system, humans can possess the A antigen (A blood type), the B antigen (B blood type),
+      both the A and B antigen (AB blood type), or neither of these antigens (O blood type).
+      Red blood cell antigen systems of this sort can be used for paternity blood testing because there are genes
+      that code for the antigens and these are inherited genes.
+      A mother who has Type B blood and a father who has Type O blood could not have a child who has type AB blood.
+      The true father of the child must have the gene for the A antigen.
+      This test will never say you who is the father, but it can say who is not.
+      <ion-button expand="block" (click)="startTest()">Start test</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-content *ngIf="step == 1 && !loading">
+
+  <form [formGroup]="form" (ngSubmit)="checkBlood()">
+
+    <h3>Father</h3>
+    <ion-list>
+      <ion-item>
+        <ion-label>Blood group</ion-label>
+        <ion-select value="" formControlName="fathersGroup">
+          <ion-select-option value="0">0</ion-select-option>
+          <ion-select-option value="A">A</ion-select-option>
+          <ion-select-option value="B">B</ion-select-option>
+          <ion-select-option value="AB">AB</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Blood RH</ion-label>
+        <ion-select value="" formControlName="fathersRH">
+          <ion-select-option value="+">+</ion-select-option>
+          <ion-select-option value="-">-</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <h3>Mother</h3>
+    <ion-list>
+      <ion-item>
+        <ion-label>Blood group</ion-label>
+        <ion-select value="" formControlName="mothersGroup">
+          <ion-select-option value="0">0</ion-select-option>
+          <ion-select-option value="A">A</ion-select-option>
+          <ion-select-option value="B">B</ion-select-option>
+          <ion-select-option value="AB">AB</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Blood RH</ion-label>
+        <ion-select value="" formControlName="mothersRH">
+          <ion-select-option value="+">+</ion-select-option>
+          <ion-select-option value="-">-</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <h3>Kid</h3>
+    <ion-list>
+      <ion-item>
+        <ion-label>Blood group</ion-label>
+        <ion-select value="" formControlName="kidsGroup">
+          <ion-select-option value="0">0</ion-select-option>
+          <ion-select-option value="A">A</ion-select-option>
+          <ion-select-option value="B">B</ion-select-option>
+          <ion-select-option value="AB">AB</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Blood RH</ion-label>
+        <ion-select value="" formControlName="kidsRH">
+          <ion-select-option value="+">+</ion-select-option>
+          <ion-select-option value="-">-</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-button type="submit" [disabled]="form.invalid" expand="block">Check it</ion-button>
+
+  </form>
+
+</ion-content>
+
+<ion-content [fullscreen]="true" *ngIf="step == 2 && !loading">
+
+  <ion-text style="text-align: center;">
+    <div class="content">
+      <h4>Possible blood types:</h4>
+      <h5 *ngFor="let result of results">{{result}}</h5>
+      <h4>Your kid blood type:</h4>
+      <h5>{{kid.tests.bloodTest.kidParameterValue}}</h5>
+      <br />
+      <h5 *ngIf="cisABPossible()">
+        This is possible that you or your partner have Cis-AB blood group and your kid could have also AB group in this situation.
+        This is a very rare option, but it is possible (less than 1% of chance).
+      </h5>
+      <h5 *ngIf="results.indexOf(kid.tests.bloodTest.kidParameterValue) > -1 || cisABPossible()">It means that it is possible that you are a father.</h5>
+      <h5 *ngIf="results.indexOf(kid.tests.bloodTest.kidParameterValue) == -1 && !cisABPossible()"><b>This is impossible that you are a father.</b></h5>
+    </div>
+  </ion-text>
+
+  <div class="content">
+    <ion-button type="submit" (click)="testAgain()" expand="block" color="light">Test again</ion-button>
+  </div>
+
+</ion-content>
+
+<ion-content [fullscreen]="true" *ngIf="loading">
+  <div class="center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+</ion-content>
+

@@ -16,6 +16,10 @@ const routes: Routes = [
     loadChildren: () => import('./hair-color-test/hair-color-test.module').then(m => m.HairColorTestPageModule)
   },
   {
+    path: 'blood-test',
+    loadChildren: () => import('./blood-test/blood-test.module').then(m => m.BloodTestPageModule)
+  },
+  {
     path: 'peculiarities-test/:type',
     loadChildren: () => import('./peculiarities-test/peculiarities-test.module').then(m => m.PeculiaritiesTestPageModule)
   }

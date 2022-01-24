@@ -13,7 +13,9 @@ import {StorageKey, StorageService} from "../services/storage.service";
   styleUrls: ['kids-list.page.scss']
 })
 export class KidsListPage implements OnInit {
+  public loading: boolean;
   public kids$: Observable<Kid[][]>;
+  public emptyList: boolean;
 
   constructor(private kidsService: KidsService,
               private storageService: StorageService,
@@ -22,7 +24,16 @@ export class KidsListPage implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.kids$ = this.kidsService.kidsList$;
+    this.kids$.subscribe(kidsList => {
+      this.loading = false;
+      if(kidsList.length === 0) {
+        this.emptyList = true;
+      } else {
+        this.emptyList = false;
+      }
+    })
   }
 
   async openModal(kid: Kid) {
@@ -58,7 +69,6 @@ export class KidsListPage implements OnInit {
     });
     toast.present();
   }
-
 
 
 

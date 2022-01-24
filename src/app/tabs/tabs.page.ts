@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {AuthenticationService} from '../services/authentication.service';
+import {Platform} from "@ionic/angular";
 
 @Component({
   selector: 'app-tabs',
@@ -7,7 +8,17 @@ import {AuthenticationService} from '../services/authentication.service';
   styleUrls: ['tabs.page.scss']
 })
 export class TabsPage {
+  private backButton;
 
-  constructor(public authService: AuthenticationService) {}
+  constructor(public authService: AuthenticationService,
+              private platform: Platform) {}
+
+  ionViewDidEnter() {
+    this.backButton = this.platform.backButton.observers.pop();
+  }
+
+  ionViewWillLeave() {
+    this.platform.backButton.observers.push(this.backButton);
+  }
 
 }
