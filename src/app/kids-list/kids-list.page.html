@@ -12,6 +12,11 @@
 
 <ion-content [fullscreen]="true">
 
+  <div *ngIf="emptyList" class="content">
+    <h5>Welcome to Paternity Tester. For now you do not have any kids for test purposes. Click an ADD button to create a first one. You can check yours, your friends or your family members paternity.</h5>
+    <img src="./assets/undraw_selection_re_ycpo.png" style="height: 30vh; margin: 0 auto;"/>
+  </div>
+
   <ion-card *ngFor="let kid of kids$ | async">
     <ion-card-header>
       <ion-card-title>

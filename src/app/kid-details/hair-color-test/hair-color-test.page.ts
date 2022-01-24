@@ -90,9 +90,16 @@ export class HairColorTestPage implements OnInit {
             this.kidsService.updateKid(this.kid).then(k => {
               this.step = 2;
               this.loading = false;
+            }).catch(err => {
+              window.alert(err);
+              this.step = 1;
+              this.loading = false;
             });
           }
         } else {
+          window.alert('Please, check given params. This combination is impossible.');
+          this.step = 1;
+          this.loading = false;
           console.log('Error OnCalcQuick');
         }
         this.step = 2;

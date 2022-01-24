@@ -124,7 +124,7 @@ export class BabytesterService {
   public getResultsQuick(model, f, m, ff, fm, mf, mm) {
     let out = this.quickGC(model, f, m, ff, fm, mf, mm);
     let s = 0;
-    for (var j = 0; j < out.length; j++)
+    for (let j = 0; j < out.length; j++)
       {s += out[j].prob;}
     if (isNaN(s)) {
       return [{fail: 1, desc: 'This combination of parents\' and child\'s traits does not match the model'}];
@@ -133,13 +133,11 @@ export class BabytesterService {
         out[j].prob /= s;
       }
     }
-    out = out.map((o) => {
-      return {
+    out = out.map((o) => ({
         prob: (Math.round(o.prob * 10000) / 100),
         out: o.out,
         desc: o.desc
-      };
-    });
+      }));
     return out;
   };
 
@@ -161,7 +159,7 @@ export class BabytesterService {
       const mf = this.phenoToProb(ph_mf === -1 ? null : model.outcomes[ph_mf], model.genes);
       const mm = this.phenoToProb(ph_mm === -1 ? null : model.outcomes[ph_mm], model.genes);
       var prob = this.quickPermutate(mf, mm);
-      for (var i = 0; i < prob.length; i++) {
+      for (let i = 0; i < prob.length; i++) {
         m[i][0] = m[i][0] ? prob[i][0] : 0;
         m[i][1] = m[i][1] ? prob[i][1] : 0;
         m[i][2] = m[i][2] ? prob[i][2] : 0;
@@ -272,5 +270,177 @@ export class BabytesterService {
     }
     return out;
   }
+
+  public getPossibleBloodTypes(mother, father) {
+    const result = [];
+    if (mother.group === '0' && father.group === '0') {
+      //moĹźe byÄ tylko grupa 0.
+      if (mother.rh === '-' && father.rh === '-') {
+        //gdy oboje rodzice majÄ RH-, to dziecko moĹźe mieÄ teĹź RH tylko Minus.
+        result.push({group: '0', rh: '-'});
+      }
+      else {
+        result.push({group: '0', rh: '-'});
+        result.push({group: '0', rh: '+'});
+      }
+      return result;
+    }
+    if (mother.group === 'A' && father.group === 'A') {
+      //MoĹźe byÄ tylko grupa  A, 0.
+      if (mother.rh === '-' && father.rh === '-') {
+        //gdy oboje rodzice majÄ RH-, to dziecko moĹźe mieÄ teĹź RH tylko Minus.
+        result.push({group: '0', rh: '-'});
+        result.push({group: 'A', rh: '-'});
+      }
+      else {
+        result.push({group: '0', rh: '-'});
+        result.push({group: '0', rh: '+'});
+        result.push({group: 'A', rh: '-'});
+        result.push({group: 'A', rh: '+'});
+      }
+      return result;
+    }
+    if ((mother.group === 'A' && father.group === 'B') ||
+      (mother.group === 'B' && father.group === 'A')) {
+      //moĹźe byÄ tylko grupa  A,B, AB, 0.
+      if (mother.rh === '-' && father.rh === '-') {
+        //gdy oboje rodzice majÄ RH-, to dziecko moĹźe mieÄ teĹź RH tylko Minus.
+        result.push({group: '0', rh: '-'});
+        result.push({group: 'A', rh: '-'});
+        result.push({group: 'AB', rh: '-'});
+        result.push({group: 'B', rh: '-'});
+      }
+      else {
+        result.push({group: '0', rh: '-'});
+        result.push({group: '0', rh: '+'});
+        result.push({group: 'A', rh: '-'});
+        result.push({group: 'A', rh: '+'});
+        result.push({group: 'AB', rh: '-'});
+        result.push({group: 'AB', rh: '+'});
+        result.push({group: 'B', rh: '-'});
+        result.push({group: 'B', rh: '+'});
+      }
+      return result;
+    }
+    if ((mother.group === 'A' && father.group === 'AB') ||
+      (mother.group === 'AB' && father.group === 'A')) {
+      //moĹźe byÄ tylko grupa  A,B, AB.
+      if (mother.rh === '-' && father.rh === '-') {
+        //gdy oboje rodzice majÄ RH-, to dziecko moĹźe mieÄ teĹź RH tylko Minus.
+        result.push({group: 'A', rh: '-'});
+        result.push({group: 'AB', rh: '-'});
+        result.push({group: 'B', rh: '-'});
+      }
+      else {
+        result.push({group: 'A', rh: '-'});
+        result.push({group: 'A', rh: '+'});
+        result.push({group: 'AB', rh: '-'});
+        result.push({group: 'AB', rh: '+'});
+        result.push({group: 'B', rh: '-'});
+        result.push({group: 'B', rh: '+'});
+      }
+      return result;
+    }
+    if ((mother.group === 'A' && father.group === '0') ||
+      (mother.group === '0' && father.group === 'A')) {
+      //moĹźe byÄ tylko grupa  A,0.
+      if (mother.rh === '-' && father.rh === '-') {
+        //gdy oboje rodzice majÄ RH-, to dziecko moĹźe mieÄ teĹź RH tylko Minus.
+        result.push({group: '0', rh: '-'});
+        result.push({group: 'A', rh: '-'});
+      }
+      else {
+        result.push({group: '0', rh: '-'});
+        result.push({group: '0', rh: '+'});
+        result.push({group: 'A', rh: '-'});
+        result.push({group: 'A', rh: '+'});
+      }
+      return result;
+    }
+    if (mother.group === 'B' && father.group === 'B') {
+      //moĹźe byÄ tylko grupa  B, 0.
+      if (mother.rh === '-' && father.rh === '-') {
+        //gdy oboje rodzice majÄ RH-, to dziecko moĹźe mieÄ teĹź RH tylko Minus.
+        result.push({group: '0', rh: '-'});
+        result.push({group: 'B', rh: '-'});
+      }
+      else {
+        result.push({group: '0', rh: '-'});
+        result.push({group: '0', rh: '+'});
+        result.push({group: 'B', rh: '-'});
+        result.push({group: 'B', rh: '+'});
+      }
+      return result;
+    }
+    if ((mother.group === 'B' && father.group === 'AB') ||
+      (mother.group === 'AB' && father.group === 'B')) {
+      //moĹźe byÄ tylko grupa  A,B, AB.
+      if (mother.rh === '-' && father.rh === '-') {
+        //gdy oboje rodzice majÄ RH-, to dziecko moĹźe mieÄ teĹź RH tylko Minus.
+        result.push({group: 'A', rh: '-'});
+        result.push({group: 'AB', rh: '-'});
+        result.push({group: 'B', rh: '-'});
+      }
+      else {
+        result.push({group: 'A', rh: '-'});
+        result.push({group: 'A', rh: '+'});
+        result.push({group: 'AB', rh: '-'});
+        result.push({group: 'AB', rh: '+'});
+        result.push({group: 'B', rh: '-'});
+        result.push({group: 'B', rh: '+'});
+      }
+      return result;
+    }
+    if ((mother.group === 'B' && father.group === '0') ||
+      (mother.group === '0' && father.group === 'B')) {
+      //moĹźe byÄ tylko grupa  B, 0.
+      if (mother.rh === '-' && father.rh === '-') {
+        //gdy oboje rodzice majÄ RH-, to dziecko moĹźe mieÄ teĹź RH tylko Minus.
+        result.push({group: '0', rh: '-'});
+        result.push({group: 'B', rh: '-'});
+      }
+      else {
+        result.push({group: '0', rh: '-'});
+        result.push({group: '0', rh: '+'});
+        result.push({group: 'B', rh: '-'});
+        result.push({group: 'B', rh: '+'});
+      }
+      return result;
+    }
+    if (mother.group === 'AB' && father.group === 'AB') {
+      //moĹźe byÄ tylko grupa A, B, AB.
+      if (mother.rh === '-' && father.rh === '-') {
+        //gdy oboje rodzice majÄ RH-, to dziecko moĹźe mieÄ teĹź RH tylko Minus.
+        result.push({group: 'A', rh: '-'});
+        result.push({group: 'AB', rh: '-'});
+        result.push({group: 'B', rh: '-'});
+      }
+      else {
+        result.push({group: 'A', rh: '-'});
+        result.push({group: 'A', rh: '+'});
+        result.push({group: 'AB', rh: '-'});
+        result.push({group: 'AB', rh: '+'});
+        result.push({group: 'B', rh: '-'});
+        result.push({group: 'B', rh: '+'});
+      }
+      return result;
+    }
+    if ((mother.group === 'AB' && father.group === '0') ||
+      (mother.group === '0' && father.group === 'AB')) {
+      //moĹźe byÄ tylko grupa  A,B.
+      if (mother.rh === '-' && father.rh === '-') {
+        //gdy oboje rodzice majÄ RH-, to dziecko moĹźe mieÄ teĹź RH tylko Minus.
+        result.push({group: 'A', rh: '-'});
+        result.push({group: 'B', rh: '-'});
+      }
+      else {
+        result.push({group: 'A', rh: '-'});
+        result.push({group: 'A', rh: '+'});
+        result.push({group: 'B', rh: '-'});
+        result.push({group: 'B', rh: '+'});
+      }
+      return result;
+    }
+  };
 
 }
