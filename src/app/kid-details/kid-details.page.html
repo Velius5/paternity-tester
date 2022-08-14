@@ -1,7 +1,7 @@
 <div *ngIf="kid">
   <ion-header>
     <ion-toolbar class="centered-toolbar">
-      <ion-title class="centered-title" size="small">Paternity Tester</ion-title>
+      <ion-title class="centered-title" size="small">Paternity Test</ion-title>
     </ion-toolbar>
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -20,6 +20,7 @@
 
       <ion-card-content>
         What type of test you wanna do?
+        <p *ngIf="authService.googleTesterLogged">Please, remember that this app is only for fun!</p>
       </ion-card-content>
     </ion-card>
 

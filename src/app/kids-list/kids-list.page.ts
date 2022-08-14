@@ -5,6 +5,8 @@ import {Observable} from 'rxjs';
 import {ModalController, ToastController} from '@ionic/angular';
 import {AddKidModalComponent} from './add-kid-modal/add-kid-modal.component';
 import {StorageKey, StorageService} from "../services/storage.service";
+import {AuthenticationService} from "../services/authentication.service";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -14,13 +16,18 @@ import {StorageKey, StorageService} from "../services/storage.service";
 })
 export class KidsListPage implements OnInit {
   public loading: boolean;
-  public kids$: Observable<Kid[][]>;
+  public kids$: Observable<Kid[]>;
   public emptyList: boolean;
 
-  constructor(private kidsService: KidsService,
+  constructor(public authService: AuthenticationService,
+              public router: Router,
+              private kidsService: KidsService,
               private storageService: StorageService,
               private modalController: ModalController,
               private toastController: ToastController) {
+    if(authService.googleTesterLogged) {
+      this.router.navigate(['menu', 'fertilization']);
+    }
   }
 
   ngOnInit(): void {
