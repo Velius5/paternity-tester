@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {KidsService} from "../../services/kids.service";
 import {Kid} from "../../model/kid";
 import {Tests} from "../../model/tests";
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
   selector: 'app-eye-color-test',
@@ -26,7 +27,8 @@ export class EyeColorTestPage implements OnInit {
               public storageService: StorageService,
               private kidsService: KidsService,
               public router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              public authService: AuthenticationService) {
     this.babytesterService = babytesterService;
     this.form = new FormGroup({
       father: new FormControl('', Validators.required),

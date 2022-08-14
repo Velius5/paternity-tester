@@ -6,6 +6,7 @@ import {StorageKey, StorageService} from '../../services/storage.service';
 import {Kid} from "../../model/kid";
 import {KidsService} from "../../services/kids.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
   selector: 'app-hair-color-test',
@@ -26,7 +27,8 @@ export class HairColorTestPage implements OnInit {
               private storageService: StorageService,
               private kidsService: KidsService,
               public router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              public authService: AuthenticationService) {
     this.babytesterService = babytesterService;
     this.form = new FormGroup({
       father: new FormControl('', Validators.required),

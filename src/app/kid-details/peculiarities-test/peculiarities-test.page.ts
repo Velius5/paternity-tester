@@ -9,6 +9,7 @@ import {Kid} from '../../model/kid';
 import {Tests} from '../../model/tests';
 import {PeculiaritiesTestType} from '../../model/peculiarities-test-type';
 import * as moment from 'moment';
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
   selector: 'app-peculiarities-test',
@@ -30,7 +31,8 @@ export class PeculiaritiesTestPage implements OnInit {
               public storageService: StorageService,
               private kidsService: KidsService,
               public router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              public authService: AuthenticationService) {
     this.babytesterService = babytesterService;
     this.route.paramMap.subscribe( paramMap => {
       this.pecularitiesTestType = paramMap.get('type') as PeculiaritiesTestType;
