@@ -1,4 +1,4 @@
-# Paternity Tester
+# Paternity Tester MVP
 Did you ever think about DNA test checking your paternity? You know that it is impossible to do a test like this in many places in the world? But there is a free alternative which can help many people - Paternity Test app.
 This app was refused by Google Play moderators because it does not comply with google play terms and conditions. That is why I decided to make it open-source.
 It can be a perfect example app if you wanna learn ionic framework.
